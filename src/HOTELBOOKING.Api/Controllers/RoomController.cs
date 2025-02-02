@@ -8,10 +8,12 @@ using HOTELBOOKING.Application.UseCase.UseCases.Room.Commands.UpdateCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.Room.Queries.GetAllQuery;
 
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HOTELBOOKING.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RoomController : ControllerBase

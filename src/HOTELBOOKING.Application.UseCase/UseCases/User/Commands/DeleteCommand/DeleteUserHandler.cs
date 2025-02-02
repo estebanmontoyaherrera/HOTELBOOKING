@@ -21,7 +21,7 @@ namespace HOTELBOOKING.Application.UseCase.UseCases.User.Commands.DeleteCommand
                 if (response.Data)
                 {
                     response.IsSuccess = true;
-                    response.Message = GlobalMessage.MESSAGE_DELETE;
+                    response.Message = GlobalMessages.MESSAGE_DELETE;
                     return response;
                 }
             }

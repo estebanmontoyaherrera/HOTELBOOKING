@@ -1,5 +1,7 @@
+using HOTELBOOKING.Api.Authentication;
 using HOTELBOOKING.Api.Extensions.Middleware;
 using HOTELBOOKING.Application.UseCase.Extensions;
+using HOTELBOOKING.Infrastructure.Extensions;
 using HOTELBOOKING.Persistence.Extension;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +14,10 @@ builder.Services.AddSwaggerGen();
 
 // Registrar servicios personalizados antes de Build()
 builder.Services
-    .AddInjectionPersistence()  // Registro de servicios de persistencia (tu capa de datos)
-    .AddInjectionApplication(); // Registro de servicios de la capa de aplicación
+    .AddInjectionPersistence()  
+    .AddInjectionApplication() 
+    .AddInjectionInfrastructure(builder.Configuration)
+    .AddAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
@@ -25,7 +29,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 // Agregar cualquier middleware personalizado
 app.AddMiddleware();

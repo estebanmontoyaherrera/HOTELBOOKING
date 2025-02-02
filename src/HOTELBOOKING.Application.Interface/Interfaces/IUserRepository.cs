@@ -6,5 +6,6 @@ namespace HOTELBOOKING.Application.Interface.Interfaces
     public interface IUserRepository : IGenericRepository<User>
     {
         Task<IEnumerable<GetAllUserResponseDto>> GetAllUsers(string storedProcedure);
+        Task<User> GetUserByEmailAsync(string procedure, string email);
     }
 }

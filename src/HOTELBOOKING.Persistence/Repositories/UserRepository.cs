@@ -20,5 +20,16 @@ namespace HOTELBOOKING.Persistence.Repositories
             var users = await connection.QueryAsync<GetAllUserResponseDto>(storedProcedure, commandType: CommandType.StoredProcedure);
             return users;
         }
+
+        public async Task<User> GetUserByEmailAsync(string procedure, string email)
+        {
+            using var connection = _context.CreateConnection;
+            var parameters = new DynamicParameters();
+            parameters.Add("Email", email);
+
+            var user = await connection
+                    .QuerySingleOrDefaultAsync<User>(procedure, param: parameters, commandType: CommandType.StoredProcedure);
+            return user;
+        }
     }
 }

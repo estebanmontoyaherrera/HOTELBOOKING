@@ -4,10 +4,12 @@ using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.DeleteCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.UpdateCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Queries.GetAllQuery;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HOTELBOOKING.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class HotelController : ControllerBase

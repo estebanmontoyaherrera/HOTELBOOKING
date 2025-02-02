@@ -3,12 +3,15 @@ using HOTELBOOKING.Application.UseCase.UseCases.User.Commands.CreateCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.User.Commands.DeleteCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.User.Commands.UpdateCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.User.Queries.GetAllQuery;
+using HOTELBOOKING.Application.UseCase.UseCases.User.Queries.LoginQuery;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HOTELBOOKING.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -19,6 +22,14 @@ namespace HOTELBOOKING.Api.Controllers
             _mediator = mediator;
         }
 
+        [AllowAnonymous]
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginQuery query)
+        {
+            var response = await _mediator.Send(query);
+            return Ok(response);
+        }
+       
         [HttpGet("ListUsers")]
         public async Task<IActionResult> tListUser()
         {
@@ -44,21 +55,21 @@ namespace HOTELBOOKING.Api.Controllers
 
             return Ok(responses);
         }
-
+       
         [HttpPut("Update")]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command)
         {
             var response = await _mediator.Send(command);
             return Ok(response);
         }
-
+       
         [HttpPut("ChangeState")]
         public async Task<IActionResult> ChangeStateUser([FromBody] ChangeStateUserCommand command)
         {
             var response = await _mediator.Send(command);
             return Ok(response);
         }
-
+        
         [HttpDelete("Delete/{userId:int}")]
         public async Task<IActionResult> DeleteUser(int userId)
         {

@@ -30,7 +30,7 @@ namespace HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.ChangeStateCo
                 if (response.Data)
                 {
                     response.IsSuccess = true;
-                    response.Message = GlobalMessage.MESSAGE_UPDATE_STATE;
+                    response.Message = GlobalMessages.MESSAGE_UPDATE_STATE;
                 }
             }
             catch (Exception e)

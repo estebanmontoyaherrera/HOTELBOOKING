@@ -27,7 +27,7 @@ namespace HOTELBOOKING.Application.UseCase.UseCases.Role.Queries.GetAllQuery
                 {
                     response.IsSuccess = true;
                     response.Data = roles;
-                    response.Message = GlobalMessage.MESSAGE_QUERY;
+                    response.Message = GlobalMessages.MESSAGE_QUERY;
                 }
             }
             catch (Exception ex)

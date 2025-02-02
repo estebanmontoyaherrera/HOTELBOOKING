@@ -12,7 +12,8 @@
         public const string SP_USER_CREATE = "SP_USER_CREATE";
         public const string SP_USER_UPDATE = "SP_USER_UPDATE";
         public const string SP_USER_CHANGE_STATE = "SP_USER_CHANGE_STATE";
-        public const string SP_USER_DELETE = "SP_USER_DELETE";        
+        public const string SP_USER_DELETE = "SP_USER_DELETE";
+        public const string SP_USER_BY_EMAIL = "SP_USER_BY_EMAIL";
         #endregion
 
         #region SP CITIES

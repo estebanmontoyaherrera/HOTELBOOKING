@@ -31,7 +31,7 @@ namespace RoomBOOKING.Application.UseCase.UseCases.Room.Commands.UpdateCommand
                 if (response.Data)
                 {
                     response.IsSuccess = true;
-                    response.Message = GlobalMessage.MESSAGE_UPDATE;
+                    response.Message = GlobalMessages.MESSAGE_UPDATE;
                 }
             }
             catch (Exception e)

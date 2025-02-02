@@ -25,7 +25,7 @@ namespace HOTELBOOKING.Api.Extensions.Middleware
                 context.Response.ContentType = "application/json";
                 await JsonSerializer.SerializeAsync(context.Response.Body, new BaseResponse<object>
                 {
-                    Message = GlobalMessage.MESSAGE_VALIDATE,
+                    Message = GlobalMessages.MESSAGE_VALIDATE,
                     Errors = e.Errors
                 });
             }

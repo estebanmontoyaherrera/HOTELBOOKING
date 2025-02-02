@@ -33,7 +33,7 @@ namespace HOTELBOOKING.Application.UseCase.UseCases.User.Commands.UpdateCommand
                 if (response.Data)
                 {
                     response.IsSuccess = true;
-                    response.Message = GlobalMessage.MESSAGE_UPDATE;
+                    response.Message = GlobalMessages.MESSAGE_UPDATE;
                 }
 
 

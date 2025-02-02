@@ -34,13 +34,13 @@ namespace HOTELBOOKING.Application.UseCase.UseCases.Role.Queries.GetByIdQuery
                 if (roles is null)
                 {
                     response.IsSuccess = false;
-                    response.Message = GlobalMessage.MESSAGE_QUERY_EMPTY;
+                    response.Message = GlobalMessages.MESSAGE_QUERY_EMPTY;
                     return response;
                 }
 
                 response.IsSuccess = true;
                 response.Data = _mapper.Map<GetRoleByIdResponseDto>(roles);
-                response.Message = GlobalMessage.MESSAGE_QUERY;
+                response.Message = GlobalMessages.MESSAGE_QUERY;
             }
             catch (Exception ex)
             {

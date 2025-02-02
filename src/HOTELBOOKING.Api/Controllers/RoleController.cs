@@ -1,11 +1,13 @@
 ﻿using HOTELBOOKING.Application.UseCase.UseCases.Role.Queries.GetAllQuery;
 using HOTELBOOKING.Application.UseCase.UseCases.Role.Queries.GetByIdQuery;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HOTELBOOKING.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RoleController : ControllerBase
