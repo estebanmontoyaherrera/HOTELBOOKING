@@ -1,5 +1,6 @@
 USE HOTELBOOKINGDB
 GO
+
 -- =============================================
 -- PROCEDIMIENTOS ALMACENADOS PARA LA TABLA ROLES
 -- =============================================
@@ -175,8 +176,6 @@ BEGIN
     INNER JOIN CITIES C ON H.CITYID = C.CITYID;
 END
 GO
-
-
 
 -- PROCEDIMIENTO PARA REGISTRAR UN NUEVO HOTEL
 CREATE OR ALTER PROCEDURE SP_HOTEL_CREATE

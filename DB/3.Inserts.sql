@@ -1,6 +1,5 @@
 USE HOTELBOOKINGDB;
 GO
-
 -- Insertar roles
 INSERT INTO ROLES (NAME) VALUES ('Agente de Viajes');
 INSERT INTO ROLES (NAME) VALUES ('Viajero');
