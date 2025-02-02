@@ -1,5 +1,6 @@
 ﻿using HOTELBOOKING.Application.Interface.Authentication;
 using HOTELBOOKING.Infrastructure.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,7 +19,10 @@ namespace HOTELBOOKING.Infrastructure.Extensions
             services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
 
             services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
-           
+            services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
+            services.AddSingleton<IPermissionService, PermissionService>();
+
 
             return services;
         }

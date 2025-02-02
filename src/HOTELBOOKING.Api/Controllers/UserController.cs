@@ -4,6 +4,7 @@ using HOTELBOOKING.Application.UseCase.UseCases.User.Commands.DeleteCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.User.Commands.UpdateCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.User.Queries.GetAllQuery;
 using HOTELBOOKING.Application.UseCase.UseCases.User.Queries.LoginQuery;
+using HOTELBOOKING.Infrastructure.Authentication;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -29,9 +30,9 @@ namespace HOTELBOOKING.Api.Controllers
             var response = await _mediator.Send(query);
             return Ok(response);
         }
-       
+        
         [HttpGet("ListUsers")]
-        public async Task<IActionResult> tListUser()
+        public async Task<IActionResult> ListUsers()
         {
             var response = await _mediator.Send(new GetAllUserQuery());
             return Ok(response);

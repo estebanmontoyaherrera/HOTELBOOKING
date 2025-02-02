@@ -1,7 +1,4 @@
-﻿using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.ChangeStateCommand;
-using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.DeleteCommand;
-using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.UpdateCommand;
-using HOTELBOOKING.Application.UseCase.UseCases.Room.Commands.ChangeStateCommand;
+﻿using HOTELBOOKING.Application.UseCase.UseCases.Room.Commands.ChangeStateCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.Room.Commands.CreateCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.Room.Commands.DeleteCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.Room.Commands.UpdateCommand;

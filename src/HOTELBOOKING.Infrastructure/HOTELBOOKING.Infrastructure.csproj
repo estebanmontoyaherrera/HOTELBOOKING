@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="7.0.20" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.1" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.1" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.3.1" />
@@ -15,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HOTELBOOKING.Application.Interface\HOTELBOOKING.Application.Interface.csproj" />
+    <ProjectReference Include="..\HOTELBOOKING.Persistence\HOTELBOOKING.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

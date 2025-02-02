@@ -132,6 +132,18 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE SP_USER_BY_EMAIL
+(
+	@EMAIL VARCHAR(255)
+)
+AS
+BEGIN
+	SELECT
+		*
+	FROM USERS
+	WHERE EMAIL = @EMAIL
+END
+GO
 -- =============================================
 -- PROCEDIMIENTOS ALMACENADOS PARA LA TABLA CITIES
 -- =============================================
@@ -174,12 +186,30 @@ CREATE OR ALTER PROCEDURE SP_HOTEL_CREATE
     @COMMISSIONRATE DECIMAL(18,2)
 AS
 BEGIN
+       -- Verificar si la ciudad existe
+    IF NOT EXISTS (SELECT 1 FROM CITIES WHERE CITYID = @CITYID)
+    BEGIN
+        RAISERROR('La ciudad especificada no existe.', 16, 1);
+        RETURN;
+    END
+
+    -- Verificar si el hotel ya existe en la ciudad
+    IF EXISTS (SELECT 1 FROM HOTELS WHERE NAME = @NAME AND CITYID = @CITYID)
+    BEGIN
+        RAISERROR('Ya existe un hotel con este nombre en la misma ciudad.', 16, 1);
+        RETURN;
+    END
+
+    -- Insertar el nuevo hotel
     INSERT INTO HOTELS (NAME, ADDRESS, CITYID, COMMISSIONRATE, STATE, AUDITCREATEDATE)
     VALUES (@NAME, @ADDRESS, @CITYID, @COMMISSIONRATE, 1, GETDATE());
     
-    RETURN SCOPE_IDENTITY(); -- Retorna el ID del nuevo hotel registrado
+    -- Retornar el ID del hotel recién creado
+    SELECT SCOPE_IDENTITY()
 END
 GO
+
+
 
 -- PROCEDIMIENTO PARA EDITAR UN HOTEL EXISTENTE
 CREATE OR ALTER PROCEDURE SP_HOTEL_UPDATE
@@ -190,6 +220,28 @@ CREATE OR ALTER PROCEDURE SP_HOTEL_UPDATE
     @COMMISSIONRATE DECIMAL(18,2)
 AS
 BEGIN
+     -- Verificar si el hotel existe
+    IF NOT EXISTS (SELECT 1 FROM HOTELS WHERE HOTELID = @HOTELID)
+    BEGIN
+        RAISERROR('El hotel especificado no existe.', 16, 1);
+        RETURN;
+    END
+
+    -- Verificar si la ciudad existe
+    IF NOT EXISTS (SELECT 1 FROM CITIES WHERE CITYID = @CITYID)
+    BEGIN
+        RAISERROR('La ciudad especificada no existe.', 16, 1);
+        RETURN;
+    END
+
+    -- Verificar si ya existe un hotel con el mismo nombre en la misma ciudad (excluyendo el actual)
+    IF EXISTS (SELECT 1 FROM HOTELS WHERE NAME = @NAME AND CITYID = @CITYID AND HOTELID <> @HOTELID)
+    BEGIN
+        RAISERROR('Ya existe otro hotel con este nombre en la misma ciudad.', 16, 1);
+        RETURN;
+    END
+
+    -- Actualizar el hotel
     UPDATE HOTELS
     SET 
         NAME = @NAME,
@@ -197,8 +249,10 @@ BEGIN
         CITYID = @CITYID,
         COMMISSIONRATE = @COMMISSIONRATE
     WHERE HOTELID = @HOTELID;
+
 END
 GO
+
 
 -- PROCEDIMIENTO PARA CAMBIAR EL ESTADO DE UN HOTEL
 CREATE OR ALTER PROCEDURE SP_HOTEL_CHANGE_STATE
@@ -307,6 +361,30 @@ CREATE OR ALTER PROCEDURE SP_ROOM_UPDATE
     @LOCATION VARCHAR(100)
 AS
 BEGIN
+    SET NOCOUNT ON;
+
+    -- Verificar si la habitación existe
+    IF NOT EXISTS (SELECT 1 FROM ROOMS WHERE ROOMID = @ROOMID)
+    BEGIN
+        RAISERROR('La habitación especificada no existe.', 16, 1);
+        RETURN;
+    END
+
+    -- Verificar si el hotel existe
+    IF NOT EXISTS (SELECT 1 FROM HOTELS WHERE HOTELID = @HOTELID)
+    BEGIN
+        RAISERROR('El hotel especificado no existe.', 16, 1);
+        RETURN;
+    END
+
+    -- Verificar si el tipo de habitación existe
+    IF NOT EXISTS (SELECT 1 FROM ROOMTYPES WHERE ROOMTYPEID = @ROOMTYPEID)
+    BEGIN
+        RAISERROR('El tipo de habitación especificado no existe.', 16, 1);
+        RETURN;
+    END
+
+    -- Actualizar la habitación
     UPDATE ROOMS
     SET 
         HOTELID = @HOTELID,
@@ -315,8 +393,11 @@ BEGIN
         TAXES = @TAXES,
         LOCATION = @LOCATION
     WHERE ROOMID = @ROOMID;
+
+   
 END
 GO
+
 -- PROCEDIMIENTO PARA CAMBIAR EL ESTADO DE UNA HABITACIÓN
 CREATE OR ALTER PROCEDURE SP_ROOM_CHANGE_STATE
     @ROOMID INT,
@@ -329,28 +410,12 @@ BEGIN
 END
 GO
 
--- PROCEDIMIENTO PARA ELIMINAR UNA HABITACIÓN (VALIDANDO QUE NO TENGA RESERVAS ASOCIADAS)
-CREATE OR ALTER PROCEDURE SP_ROOM_DELETE
-    @ROOMID INT
-AS
-BEGIN
-    IF EXISTS (SELECT 1 FROM RESERVATIONS WHERE ROOMID = @ROOMID)
-    BEGIN
-        RAISERROR('No se puede eliminar la habitación porque tiene reservas asociadas.', 16, 1);
-        RETURN;
-    END
-    
-    DELETE FROM ROOMS WHERE ROOMID = @ROOMID;
-END
-GO
-
--- PROCEDIMIENTO PARA LISTAR RESERVAS DE LOS HOTELES GESTIONADOS POR EL AGENTE
 CREATE OR ALTER PROCEDURE SP_RESERVATION_LIST_BY_AGENT
     @USERID INT -- ID del agente que inicia sesión
 AS
 BEGIN
-    -- Validar que el usuario sea un agente con hoteles asignados
-    IF NOT EXISTS (SELECT 1 FROM AGENTHOTELS WHERE USERID = @USERID) 
+    -- Validar que el usuario tenga hoteles asignados
+    IF NOT EXISTS (SELECT 1 FROM USERHOTELS WHERE USERID = @USERID) 
     BEGIN
         RAISERROR('El agente no tiene hoteles asignados.', 16, 1);
         RETURN;
@@ -372,14 +437,14 @@ BEGIN
     FROM RESERVATIONS R
     INNER JOIN ROOMS RM ON R.ROOMID = RM.ROOMID
     INNER JOIN HOTELS H ON RM.HOTELID = H.HOTELID
-    INNER JOIN AGENTHOTELS AH ON H.HOTELID = AH.HOTELID
+    INNER JOIN USERHOTELS UH ON H.HOTELID = UH.HOTELID -- Tabla renombrada
     INNER JOIN ROOMTYPES RT ON RM.ROOMTYPEID = RT.ROOMTYPEID
     INNER JOIN USERS U ON R.USERID = U.USERID
-    WHERE AH.USERID = @USERID -- Filtro por agente
+    WHERE UH.USERID = @USERID -- Filtro por agente
     ORDER BY R.AUDITCREATEDATE DESC;
 END
 GO
----PROCEDIMIENTO PARA VER EL DETALLE DE UNA RESERVA (VALIDANDO PERMISOS DEL AGENTE)
+
 CREATE OR ALTER PROCEDURE SP_RESERVATION_DETAIL_BY_ID
     @RESERVATIONID INT,
     @USERID INT -- ID del agente que solicita el detalle
@@ -390,16 +455,16 @@ BEGIN
         SELECT 1 
         FROM RESERVATIONS R
         INNER JOIN ROOMS RM ON R.ROOMID = RM.ROOMID
-        INNER JOIN AGENTHOTELS AH ON RM.HOTELID = AH.HOTELID
+        INNER JOIN USERHOTELS UH ON RM.HOTELID = UH.HOTELID -- Tabla renombrada
         WHERE R.RESERVATIONID = @RESERVATIONID 
-        AND AH.USERID = @USERID
+        AND UH.USERID = @USERID
     )
     BEGIN
         RAISERROR('No tiene permisos para ver esta reserva.', 16, 1);
         RETURN;
     END
 
-    -- Detalle de la reserva
+    -- Detalle de la reserva (sin cambios en esta sección)
     SELECT 
         R.RESERVATIONID,
         H.NAME AS HOTEL,
@@ -421,7 +486,7 @@ BEGIN
     INNER JOIN USERS U ON R.USERID = U.USERID
     WHERE R.RESERVATIONID = @RESERVATIONID;
 
-    -- Huéspedes asociados
+    -- Huéspedes asociados (sin cambios)
     SELECT 
         G.FIRSTNAME AS NOMBRE,
         G.LASTNAME AS APELLIDO,
@@ -434,7 +499,7 @@ BEGIN
     INNER JOIN DOCUMENTTYPES DT ON G.DOCUMENTTYPEID = DT.DOCUMENTTYPEID
     WHERE G.RESERVATIONID = @RESERVATIONID;
 
-    -- Contacto de emergencia
+    -- Contacto de emergencia (sin cambios)
     SELECT 
         FULLNAME AS NOMBRECOMPLETO,
         PHONE AS TELEFONO
@@ -442,8 +507,9 @@ BEGIN
     WHERE RESERVATIONID = @RESERVATIONID;
 END
 GO
--- Listar reservas del agente con ID = 1
-EXEC SP_RESERVATION_LIST_BY_AGENT @USERID = 1;
 
--- Ver detalle de la reserva ID = 5 (solo si el agente tiene permisos)
-EXEC SP_RESERVATION_DETAIL_BY_ID @RESERVATIONID = 1, @USERID = 1;
+-- Listar reservas del agente con ID = 1
+--EXEC SP_RESERVATION_LIST_BY_AGENT @USERID = 1;
+
+---- Ver detalle de la reserva ID = 1 (solo si el agente tiene permisos)
+--EXEC SP_RESERVATION_DETAIL_BY_ID @RESERVATIONID = 1, @USERID = 1;

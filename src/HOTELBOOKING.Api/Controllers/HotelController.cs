@@ -3,6 +3,7 @@ using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.CreateCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.DeleteCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.UpdateCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Queries.GetAllQuery;
+using HOTELBOOKING.Infrastructure.Authentication;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,14 +21,14 @@ namespace HOTELBOOKING.Api.Controllers
         {
             _mediator = mediator;
         }
-
+        //[HasPermission(Permission.ListHotels)]
         [HttpGet("ListHotels")]
-        public async Task<IActionResult> ListHotel()
+        public async Task<IActionResult> ListHotels()
         {
             var response = await _mediator.Send(new GetAllHotelQuery());
             return Ok(response);
         }
-
+        //[HasPermission(Permission.CreateHotel)]
         [HttpPost("Create")]
         public async Task<IActionResult> CreateHotel([FromBody] CreateHotelCommand command)
         {
