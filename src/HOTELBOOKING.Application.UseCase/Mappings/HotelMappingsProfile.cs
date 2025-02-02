@@ -1,0 +1,21 @@
+﻿using AutoMapper;
+using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.ChangeStateCommand;
+using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.CreateCommand;
+using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.UpdateCommand;
+using HOTELBOOKING.Domain.Entities;
+
+namespace HOTELBOOKING.Application.UseCase.Mappings
+{
+    public class HotelMappingsProfile : Profile
+    {
+        public HotelMappingsProfile()
+        {
+
+            CreateMap<CreateHotelCommand, Hotel>();
+            CreateMap<UpdateHotelCommand, Hotel>();
+            CreateMap<ChangeStateHotelCommand, Hotel>();
+
+
+        }
+    }
+}

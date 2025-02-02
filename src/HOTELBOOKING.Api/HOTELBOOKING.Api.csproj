@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HOTELBOOKING.Application.UseCase\HOTELBOOKING.Application.UseCase.csproj" />
+    <ProjectReference Include="..\HOTELBOOKING.Infrastructure\HOTELBOOKING.Infrastructure.csproj" />
+    <ProjectReference Include="..\HOTELBOOKING.Persistence\HOTELBOOKING.Persistence.csproj" />
+    <ProjectReference Include="..\HOTELBOOKING.Utilities\HOTELBOOKING.Utilities.csproj" />
+  </ItemGroup>
+
+</Project>
