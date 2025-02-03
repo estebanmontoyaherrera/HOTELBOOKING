@@ -95,6 +95,7 @@ CREATE TABLE ROOMS
     ROOMID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
     HOTELID INT NOT NULL,
     ROOMTYPEID INT NOT NULL,
+	CAPACITY INT  DEFAULT 1,
     BASECOST DECIMAL(18,2) NOT NULL,
     TAXES DECIMAL(18,2) NOT NULL,
     LOCATION VARCHAR(100) NOT NULL,
@@ -129,15 +130,12 @@ CREATE TABLE RESERVATIONS
     ROOMID INT NOT NULL,
     USERID INT NOT NULL,
     CHECKINDATE DATETIME2(7) NOT NULL,
-    CHECKOUTDATE DATETIME2(7) NOT NULL,
-    GUESTCOUNT INT NOT NULL,
-    CITYID INT NOT NULL, -- Ciudad directa para búsquedas
-    TOTALCOST DECIMAL(18,2) NOT NULL,
+    CHECKOUTDATE DATETIME2(7) NOT NULL,  
     STATE INT NOT NULL DEFAULT 1,
     AUDITCREATEDATE DATETIME2(7) DEFAULT GETDATE(),
     FOREIGN KEY (ROOMID) REFERENCES ROOMS(ROOMID),
     FOREIGN KEY (USERID) REFERENCES USERS(USERID),
-    FOREIGN KEY (CITYID) REFERENCES CITIES(CITYID)
+   
 );
 GO
 
@@ -185,19 +183,19 @@ CREATE TABLE NOTIFICATIONS
 GO
 
 -- Trigger para insertar notificación y marcar envío de correo
-CREATE TRIGGER TRG_AFTER_RESERVATION_INSERT
-ON RESERVATIONS
-AFTER INSERT
-AS
-BEGIN
-    -- Insertar notificación
-    INSERT INTO NOTIFICATIONS (USERID, MESSAGE, ISEMAILSENT)
-    SELECT USERID, 'Your reservation has been successfully created!', 0
-    FROM INSERTED;
+--CREATE TRIGGER TRG_AFTER_RESERVATION_INSERT
+--ON RESERVATIONS
+--AFTER INSERT
+--AS
+--BEGIN
+--    -- Insertar notificación
+--    INSERT INTO NOTIFICATIONS (USERID, MESSAGE, ISEMAILSENT)
+--    SELECT USERID, 'Your reservation has been successfully created!', 0
+--    FROM INSERTED;
 
-    -- Aquí iría la lógica para enviar el correo (ejecutar un servicio externo)
-    -- Este paso depende de la implementación de la aplicación
-END;
+--    -- Aquí iría la lógica para enviar el correo (ejecutar un servicio externo)
+--    -- Este paso depende de la implementación de la aplicación
+--END;
 GO
 
 -- Restricción para asegurar que solo agentes puedan gestionar hoteles (ejemplo)

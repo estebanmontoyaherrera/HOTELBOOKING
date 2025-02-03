@@ -13,6 +13,7 @@ namespace HOTELBOOKING.Application.Dtos.Room.Response
         public string? HotelName { get; set; }
         public int? RoomTypeId { get; set; }
         public string? RoomTypeName { get; set; }
+        public int? Capacity { get; set; }
         public decimal? BaseCost { get; set; }
         public decimal? Taxes { get; set; }
         public string? Location { get; set; }

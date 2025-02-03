@@ -58,21 +58,23 @@ VALUES
 INSERT INTO USERHOTELS (USERID, HOTELID) VALUES (1, 1);
 
 -- Insertar tipos de habitación
-INSERT INTO ROOMTYPES (NAME) VALUES ('Individual'), ('Doble');
+INSERT INTO ROOMTYPES (NAME) 
+VALUES ('Individual'),('Doble'),('Triple'),('Suite'),('Presidencial');
+
 
 -- Insertar habitaciones
-INSERT INTO ROOMS (HOTELID, ROOMTYPEID, BASECOST, TAXES, LOCATION) 
+INSERT INTO ROOMS (HOTELID, ROOMTYPEID, CAPACITY, BASECOST, TAXES, LOCATION) 
 VALUES 
-(1, 1, 200000.00, 30000.00, 'Piso 1'),
-(1, 2, 350000.00, 50000.00, 'Piso 2');
+(1, 1, 1, 200000.00, 30000.00, 'Piso 1'),
+(1, 2, 2, 350000.00, 50000.00, 'Piso 2');
 
 -- Insertar tipos de documento y géneros
 INSERT INTO DOCUMENTTYPES (NAME) VALUES ('Cédula de Ciudadanía'), ('Pasaporte');
 INSERT INTO GENDERS (NAME) VALUES ('Masculino'), ('Femenino');
 
 -- Insertar reserva
-INSERT INTO RESERVATIONS (ROOMID, USERID, CHECKINDATE, CHECKOUTDATE, GUESTCOUNT, CITYID, TOTALCOST)
-VALUES (1, 2, '2025-02-10', '2025-02-15', 1, 1, 230000.00);
+INSERT INTO RESERVATIONS (ROOMID, USERID, CHECKINDATE, CHECKOUTDATE)
+VALUES (1, 2, '2025-02-10', '2025-02-15');
 
 -- Insertar huésped
 INSERT INTO GUESTS (RESERVATIONID, FIRSTNAME, LASTNAME, BIRTHDATE, GENDERID, DOCUMENTTYPEID, DOCUMENTNUMBER, EMAIL, PHONE)
@@ -82,11 +84,44 @@ VALUES (1, 'María', 'Gómez', '1990-05-05', 2, 1, '1234567890', 'viajero@ejemplo.
 INSERT INTO EMERGENCYCONTACTS (RESERVATIONID, FULLNAME, PHONE)
 VALUES (1, 'Carlos Pérez', '301-654-3210');
 
+-- Ver todos los roles
+SELECT * FROM ROLES;
 
-SELECT 
-    P.NAME
-FROM USERS U
-INNER JOIN ROLES R ON U.ROLEID = R.ROLEID
-INNER JOIN ROLEPERMISSIONS RP ON R.ROLEID = RP.ROLEID
-INNER JOIN PERMISSIONS P ON RP.PERMISSIONID = P.PERMISSIONID
-WHERE U.USERID = @USERID
+-- Ver todos los permisos
+SELECT * FROM PERMISSIONS;
+
+-- Ver la asignación de permisos a roles
+SELECT * FROM ROLEPERMISSIONS;
+
+-- Ver todos los usuarios
+SELECT * FROM USERS;
+
+-- Ver todas las ciudades
+SELECT * FROM CITIES;
+
+-- Ver todos los hoteles
+SELECT * FROM HOTELS;
+
+-- Ver la asignación de hoteles a usuarios
+SELECT * FROM USERHOTELS;
+
+-- Ver todos los tipos de habitación
+SELECT * FROM ROOMTYPES;
+
+-- Ver todas las habitaciones
+SELECT * FROM ROOMS;
+
+-- Ver todos los tipos de documento
+SELECT * FROM DOCUMENTTYPES;
+
+-- Ver todos los géneros
+SELECT * FROM GENDERS;
+
+-- Ver todas las reservas
+SELECT * FROM RESERVATIONS;
+
+-- Ver todos los huéspedes
+SELECT * FROM GUESTS;
+
+-- Ver todos los contactos de emergencia
+SELECT * FROM EMERGENCYCONTACTS;

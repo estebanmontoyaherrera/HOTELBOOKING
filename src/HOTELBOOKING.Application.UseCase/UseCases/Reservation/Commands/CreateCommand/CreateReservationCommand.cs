@@ -8,10 +8,8 @@ namespace HOTELBOOKING.Application.UseCase.UseCases.Reservation.Commands.CreateC
         public int? RoomId { get; set; }
         public int UserId { get; set; }
         public DateTime? CheckInDate { get; set; }
-        public DateTime? CheckOutDate { get; set; }
-        public int? GuestCount { get; set; }
-        public int? CityId { get; set; }
-        public decimal? TotalCost { get; set; }
+        public DateTime? CheckOutDate { get; set; }    
+        
         public IEnumerable<CreateGuestCommand>? Guests { get; set; } = null!;
         public CreateEmergencyContactCommand? EmergencyContact { get; set; } = null!;
     }
