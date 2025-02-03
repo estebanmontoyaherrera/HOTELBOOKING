@@ -21,6 +21,8 @@ namespace HOTELBOOKING.Persistence.Repositories
 
         public IRoomRepository Room { get; }
 
+        public IReservationRepository Reservation { get; }
+
         public UnitOfWork(ApplicationDbContext context)
         {
            
@@ -31,6 +33,7 @@ namespace HOTELBOOKING.Persistence.Repositories
             Hotel = new HotelRepository(_context);
             RoomType = new RoomTypeRepository(_context);
             Room = new RoomRepository(_context);
+            Reservation = new ReservationRepository(_context);
         }
 
         public void Dispose()

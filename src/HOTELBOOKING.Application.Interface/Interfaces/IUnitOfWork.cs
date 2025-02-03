@@ -15,6 +15,7 @@ namespace HOTELBOOKING.Application.Interface.Interfaces
         IHotelRepository Hotel { get; }
         IRoomTypeRepository RoomType { get; }
         IRoomRepository Room { get; }
+        IReservationRepository Reservation { get; }
         TransactionScope BeginTransaction();
     }
 }

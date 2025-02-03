@@ -59,7 +59,7 @@
         #endregion
 
         #region SP RESERVATIONS
-        public const string SP_RESERVATION_LIST = "SP_RESERVATION_LIST";
+        public const string SP_RESERVATION_LIST_ALL = "SP_RESERVATION_LIST_ALL";
         public const string SP_RESERVATION_BY_ID = "SP_RESERVATION_BY_ID";
         public const string SP_RESERVATION_CREATE = "SP_RESERVATION_CREATE";
         public const string SP_RESERVATION_CANCEL = "SP_RESERVATION_CANCEL";

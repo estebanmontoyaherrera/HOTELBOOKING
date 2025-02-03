@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HOTELBOOKING.Api.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RoomController : ControllerBase
