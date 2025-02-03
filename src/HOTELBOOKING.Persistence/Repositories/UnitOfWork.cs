@@ -23,6 +23,10 @@ namespace HOTELBOOKING.Persistence.Repositories
 
         public IReservationRepository Reservation { get; }
 
+        public IDocumentTypeRepository DocumentType { get; }
+
+        public IGenderRepository Gender { get; }
+
         public UnitOfWork(ApplicationDbContext context)
         {
            
@@ -34,6 +38,8 @@ namespace HOTELBOOKING.Persistence.Repositories
             RoomType = new RoomTypeRepository(_context);
             Room = new RoomRepository(_context);
             Reservation = new ReservationRepository(_context);
+            DocumentType = new DocumentTypeRepository(_context);
+            Gender = new GenderRepository(_context);
         }
 
         public void Dispose()

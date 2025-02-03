@@ -469,8 +469,30 @@ BEGIN
 END
 GO
 
+-- =============================================
+-- PROCEDIMIENTOS ALMACENADOS PARA LA TABLA DOCUMENTTYPES
+-- =============================================
+
+-- Listar todos los tipos de documentos
+CREATE OR ALTER PROCEDURE SP_DOCUMENTTYPE_LIST
+AS
+BEGIN
+    SELECT DOCUMENTTYPEID, NAME FROM DOCUMENTTYPES;
+END
+GO
 
 
+-- =============================================
+-- PROCEDIMIENTOS ALMACENADOS PARA LA TABLA GENDERS
+-- =============================================
+
+-- Listar todos los géneros
+CREATE OR ALTER PROCEDURE SP_GENDER_LIST
+AS
+BEGIN
+    SELECT GENDERID, NAME FROM GENDERS;
+END
+GO
 
 
 -- Listar reservas del agente con ID = 1

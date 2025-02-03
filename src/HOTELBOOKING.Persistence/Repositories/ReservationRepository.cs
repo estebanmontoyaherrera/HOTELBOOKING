@@ -76,10 +76,6 @@ namespace HOTELBOOKING.Persistence.Repositories
             reservation.ReservationId = reservationId;
             return reservation;
         }
-
-
-
-
         public async Task RegisterGuest(Guest guest)
         {
             using var connection = _context.CreateConnection;
@@ -127,7 +123,6 @@ namespace HOTELBOOKING.Persistence.Repositories
             await connection.ExecuteAsync(sql, parameters);
         }
 
-
         public async Task RegisterEmergencyContact(EmergencyContact emergencyContact)
         {
             using var connection = _context.CreateConnection;
@@ -142,6 +137,8 @@ namespace HOTELBOOKING.Persistence.Repositories
 
             await connection.ExecuteAsync(sql, parameters);
         }
+
+
     }
 
 }

@@ -16,6 +16,8 @@ namespace HOTELBOOKING.Application.Interface.Interfaces
         IRoomTypeRepository RoomType { get; }
         IRoomRepository Room { get; }
         IReservationRepository Reservation { get; }
+        IDocumentTypeRepository DocumentType { get; }
+        IGenderRepository Gender { get; }
         TransactionScope BeginTransaction();
     }
 }
