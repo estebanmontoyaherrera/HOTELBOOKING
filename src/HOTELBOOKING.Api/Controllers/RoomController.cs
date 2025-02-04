@@ -3,14 +3,14 @@ using HOTELBOOKING.Application.UseCase.UseCases.Room.Commands.CreateCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.Room.Commands.DeleteCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.Room.Commands.UpdateCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.Room.Queries.GetAllQuery;
-
+using HOTELBOOKING.Infrastructure.Authentication;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HOTELBOOKING.Api.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RoomController : ControllerBase
@@ -22,6 +22,8 @@ namespace HOTELBOOKING.Api.Controllers
             _mediator = mediator;
         }
 
+        
+        [HasPermission(Permission.ListRooms)]
         [HttpGet("ListRooms")]
         public async Task<IActionResult> ListRoom()
         {
@@ -29,12 +31,17 @@ namespace HOTELBOOKING.Api.Controllers
             return Ok(response);
         }
 
+        
+        [HasPermission(Permission.CreateRoom)]
         [HttpPost("Create")]
         public async Task<IActionResult> CreateRoom([FromBody] CreateRoomCommand command)
         {
             var response = await _mediator.Send(command);
             return Ok(response);
         }
+
+        
+        [HasPermission(Permission.UpdateRoom)]
         [HttpPut("Update")]
         public async Task<IActionResult> UpdateRoom([FromBody] UpdateRoomCommand command)
         {
@@ -42,6 +49,8 @@ namespace HOTELBOOKING.Api.Controllers
             return Ok(response);
         }
 
+       
+        [HasPermission(Permission.ChangeStateRoom)]
         [HttpPut("ChangeState")]
         public async Task<IActionResult> ChangeStateRoom([FromBody] ChangeStateRoomCommand command)
         {
@@ -49,6 +58,8 @@ namespace HOTELBOOKING.Api.Controllers
             return Ok(response);
         }
 
+        
+        [HasPermission(Permission.DeleteRoom)]
         [HttpDelete("Delete/{roomId:int}")]
         public async Task<IActionResult> DeleteRoom(int roomId)
         {

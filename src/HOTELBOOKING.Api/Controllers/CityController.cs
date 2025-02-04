@@ -17,6 +17,8 @@ namespace HOTELBOOKING.Api.Controllers
         {
             _mediator = mediator;
         }
+
+       
         //[HasPermission(Permission.ListCities)]
         [HttpGet("ListCities")]
         public async Task<IActionResult> ListCities()

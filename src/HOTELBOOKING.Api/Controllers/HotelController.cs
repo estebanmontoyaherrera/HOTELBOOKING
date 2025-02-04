@@ -23,6 +23,8 @@ namespace HOTELBOOKING.Api.Controllers
         {
             _mediator = mediator;
         }
+
+        
         [HasPermission(Permission.ListHotels)]
         [HttpGet("ListHotels")]
         public async Task<IActionResult> ListHotels()
@@ -31,7 +33,8 @@ namespace HOTELBOOKING.Api.Controllers
             return Ok(response);
         }
 
-
+        
+        [HasPermission(Permission.GetHotelById)]
         [HttpGet("{hotelId:int}")]
         public async Task<IActionResult> TakeExamById(int hotelId)
         {
@@ -40,13 +43,8 @@ namespace HOTELBOOKING.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPost("CreateHotelRooms")]
-        public async Task<IActionResult> CreateHotelRooms([FromBody] CreateHotelRoomCommand command)
-        {
-            var response = await _mediator.Send(command);
-            return Ok(response);
-        }
-
+        
+        [HasPermission(Permission.CreateHotel)]
         [HttpPost("Create")]
         public async Task<IActionResult> CreateHotel([FromBody] CreateHotelCommand command)
         {
@@ -54,6 +52,8 @@ namespace HOTELBOOKING.Api.Controllers
             return Ok(response);
         }
 
+        
+        [HasPermission(Permission.AssignRoom)]
         [HttpPost("AssignRoom")]
         public async Task<IActionResult> AssignRoom([FromBody] CreateRoomCommand command)
         {
@@ -61,6 +61,8 @@ namespace HOTELBOOKING.Api.Controllers
             return Ok(response);
         }
 
+        
+        [HasPermission(Permission.UpdateHotel)]
         [HttpPut("Update")]
         public async Task<IActionResult> UpdateHotel([FromBody] UpdateHotelCommand command)
         {
@@ -68,6 +70,8 @@ namespace HOTELBOOKING.Api.Controllers
             return Ok(response);
         }
 
+       
+        [HasPermission(Permission.ChangeStateHotel)]
         [HttpPut("ChangeState")]
         public async Task<IActionResult> ChangeStateHotel([FromBody] ChangeStateHotelCommand command)
         {
@@ -75,12 +79,13 @@ namespace HOTELBOOKING.Api.Controllers
             return Ok(response);
         }
 
+        
+        [HasPermission(Permission.DeleteHotel)]
         [HttpDelete("Delete/{hotelId:int}")]
         public async Task<IActionResult> DeleteHotel(int hotelId)
         {
             var response = await _mediator.Send(new DeleteHotelCommand() { HotelId = hotelId });
             return Ok(response);
         }
-
     }
 }

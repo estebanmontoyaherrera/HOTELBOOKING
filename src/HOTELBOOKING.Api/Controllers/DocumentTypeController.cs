@@ -1,8 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using HOTELBOOKING.Application.UseCase.UseCases.DocumentType.Queries.GetAllQuery;
+using HOTELBOOKING.Infrastructure.Authentication;
+using Microsoft.AspNetCore.Authorization;
+
 namespace HOTELBOOKING.Api.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DocumentTypeController : ControllerBase
@@ -12,7 +16,9 @@ namespace HOTELBOOKING.Api.Controllers
         {
             _mediator = mediator;
         }
-        //[HasPermission(Permission.ListDocumentTypes)]
+
+        
+        ////[HasPermission(Permission.ListDocumentTypes)]
         [HttpGet("ListDocumentTypes")]
         public async Task<IActionResult> ListDocumentTypes()
         {

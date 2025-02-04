@@ -7,7 +7,6 @@ using HOTELBOOKING.Application.UseCase.UseCases.User.Queries.LoginQuery;
 using HOTELBOOKING.Infrastructure.Authentication;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HOTELBOOKING.Api.Controllers
@@ -30,7 +29,9 @@ namespace HOTELBOOKING.Api.Controllers
             var response = await _mediator.Send(query);
             return Ok(response);
         }
+
         
+        [HasPermission(Permission.ListUsers)]
         [HttpGet("ListUsers")]
         public async Task<IActionResult> ListUsers()
         {
@@ -38,6 +39,8 @@ namespace HOTELBOOKING.Api.Controllers
             return Ok(response);
         }
 
+        
+        [HasPermission(Permission.CreateUsers)]
         [HttpPost("Create")]
         public async Task<IActionResult> CreateUsers([FromBody] List<CreateUserCommand> commands)
         {
@@ -56,21 +59,27 @@ namespace HOTELBOOKING.Api.Controllers
 
             return Ok(responses);
         }
-       
+
+        
+        [HasPermission(Permission.UpdateUser)]
         [HttpPut("Update")]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command)
         {
             var response = await _mediator.Send(command);
             return Ok(response);
         }
+
        
+        [HasPermission(Permission.ChangeStateUser)]
         [HttpPut("ChangeState")]
         public async Task<IActionResult> ChangeStateUser([FromBody] ChangeStateUserCommand command)
         {
             var response = await _mediator.Send(command);
             return Ok(response);
         }
+
         
+        [HasPermission(Permission.DeleteUser)]
         [HttpDelete("Delete/{userId:int}")]
         public async Task<IActionResult> DeleteUser(int userId)
         {

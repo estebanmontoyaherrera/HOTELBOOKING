@@ -1,11 +1,13 @@
 ﻿using HOTELBOOKING.Application.UseCase.UseCases.Reservation.Commands.CreateCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.Reservation.Queries.GetAllQuery;
+using HOTELBOOKING.Infrastructure.Authentication;
 using MediatR;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HOTELBOOKING.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ReservationController : ControllerBase
@@ -17,7 +19,8 @@ namespace HOTELBOOKING.Api.Controllers
             _mediator = mediator;
         }
 
-        //[HasPermission(Permission.ListReservations)] 
+        // Asignamos el permiso adecuado
+        [HasPermission(Permission.ListReservations)]
         [HttpGet("ListReservations")]
         public async Task<IActionResult> ListReservations()
         {
@@ -25,6 +28,8 @@ namespace HOTELBOOKING.Api.Controllers
             return Ok(response);
         }
 
+        // Asignamos el permiso adecuado
+        [HasPermission(Permission.CreateReservation)]
         [HttpPost("Create")]
         public async Task<IActionResult> RegisterReservation([FromBody] CreateReservationCommand command)
         {

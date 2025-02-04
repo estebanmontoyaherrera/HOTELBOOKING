@@ -1,8 +1,8 @@
 ﻿using HOTELBOOKING.Application.UseCase.UseCases.Role.Queries.GetAllQuery;
 using HOTELBOOKING.Application.UseCase.UseCases.Role.Queries.GetByIdQuery;
+using HOTELBOOKING.Infrastructure.Authentication;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HOTELBOOKING.Api.Controllers
@@ -19,6 +19,8 @@ namespace HOTELBOOKING.Api.Controllers
             _mediator = mediator;
         }
 
+        
+        [HasPermission(Permission.ListRoles)]
         [HttpGet("ListRoles")]
         public async Task<IActionResult> ListRole()
         {
@@ -26,13 +28,13 @@ namespace HOTELBOOKING.Api.Controllers
             return Ok(response);
         }
 
+        
+        [HasPermission(Permission.GetRoleById)]
         [HttpGet("{roleId:int}")]
         public async Task<IActionResult> RoleById(int roleId)
         {
             var response = await _mediator.Send(new GetRoleByIdQuery() { RoleId = roleId });
             return Ok(response);
         }
-
-     
     }
 }
