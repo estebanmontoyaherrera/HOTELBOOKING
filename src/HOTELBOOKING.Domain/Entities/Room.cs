@@ -10,7 +10,8 @@
         public decimal? Taxes { get; set; }
         public string? Location { get; set; }
         public int? State { get; set; }
-        
+        public string? StateName { get; set; }
+
         public DateTime? AuditCreateDate { get; set; } 
         
 

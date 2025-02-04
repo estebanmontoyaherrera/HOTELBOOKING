@@ -23,6 +23,45 @@ namespace HOTELBOOKING.Persistence.Repositories
             return hotels;
         }
 
+        public async Task<Hotel> GetHotelById(int hotelId)
+        {
+            var connection = _context.CreateConnection;
+            var sql = @"SELECT HOTELID, NAME, ADDRESS, CITYID, COMMISSIONRATE, 
+                        CASE WHEN STATE = 1 THEN 'Activo' 
+                             WHEN STATE = 0 THEN 'Inactivo' 
+                             ELSE 'Desconocido' END AS STATENAME 
+                FROM HOTELS
+                WHERE HOTELID = @HotelId";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("HotelId", hotelId);
+
+            var hotel = await connection.QuerySingleOrDefaultAsync<Hotel>(sql, param: parameters);
+
+            // Validación si el hotel no existe
+            if (hotel == null)
+            {
+                throw new KeyNotFoundException($"Hotel con ID {hotelId} no existe.");
+            }
+
+            return hotel;
+        }
+
+
+        public async Task<IEnumerable<Room>> GetRoomsByHotelId(int hotelId)
+        {
+            var connection = _context.CreateConnection;
+            var sql = @"SELECT ROOMID, HOTELID, ROOMTYPEID, CAPACITY, BASECOST, TAXES, LOCATION, CASE WHEN STATE = 1 THEN 'Habilitado' WHEN STATE = 0 THEN 'Deshabilitado' ELSE 'Desconocido'END AS STATENAME
+                         FROM ROOMS 
+                         WHERE HOTELID = @HotelId";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("HotelId", hotelId);
+
+            var rooms = await connection.QueryAsync<Room>(sql, param: parameters);
+            return rooms;
+        }
+
         public async Task<Hotel> RegisterHotel(Hotel hotel)
         {
             var connection = _context.CreateConnection;

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HOTELBOOKING.Application.Dtos.Hotel.Response;
 using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.ChangeStateCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.CreateCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.UpdateCommand;
@@ -10,6 +11,11 @@ namespace HOTELBOOKING.Application.UseCase.Mappings
     {
         public HotelMappingsProfile()
         {
+            CreateMap<GetHotelByIdResponseDto, Hotel>()
+             .ReverseMap();
+
+            CreateMap<GetRoomByHotelIdResponseDto, Room>()
+                .ReverseMap();
 
             CreateMap<CreateHotelCommand, Hotel>();
             CreateMap<CreateHotelRoomCommand, Hotel>();

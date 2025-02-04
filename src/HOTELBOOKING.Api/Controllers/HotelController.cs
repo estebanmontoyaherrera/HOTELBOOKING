@@ -3,6 +3,8 @@ using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.CreateCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.DeleteCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.UpdateCommand;
 using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Queries.GetAllQuery;
+using HOTELBOOKING.Application.UseCase.UseCases.Hotel.Queries.GetByIdQuery;
+using HOTELBOOKING.Application.UseCase.UseCases.Room.Commands.CreateCommand;
 using HOTELBOOKING.Infrastructure.Authentication;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -29,8 +31,17 @@ namespace HOTELBOOKING.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPost("CreateHotelRoom")]
-        public async Task<IActionResult> CreateHotelRoom([FromBody] CreateHotelRoomCommand command)
+
+        [HttpGet("{hotelId:int}")]
+        public async Task<IActionResult> TakeExamById(int hotelId)
+        {
+            var response = await _mediator
+                .Send(new GetHotelByIdQuery() { HotelId = hotelId });
+            return Ok(response);
+        }
+
+        [HttpPost("CreateHotelRooms")]
+        public async Task<IActionResult> CreateHotelRooms([FromBody] CreateHotelRoomCommand command)
         {
             var response = await _mediator.Send(command);
             return Ok(response);
@@ -38,6 +49,13 @@ namespace HOTELBOOKING.Api.Controllers
 
         [HttpPost("Create")]
         public async Task<IActionResult> CreateHotel([FromBody] CreateHotelCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPost("AssignRoom")]
+        public async Task<IActionResult> AssignRoom([FromBody] CreateRoomCommand command)
         {
             var response = await _mediator.Send(command);
             return Ok(response);
