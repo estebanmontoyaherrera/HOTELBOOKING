@@ -6,25 +6,25 @@ INSERT INTO ROLES (NAME) VALUES ('Viajero');
 
 -- Insertar permisos
 INSERT INTO PERMISSIONS (NAME) VALUES 
-('Listar Usuarios'),
-('Crear Usuarios'),
-('Actualizar Usuario'),
-('Cambiar Estado de Usuario'),
-('Eliminar Usuario'),
-('Listar Hoteles'),
-('Crear Hotel'),
-('Actualizar Hotel'),
-('Cambiar Estado de Hotel'),
-('Eliminar Hotel'),
-('Listar Ciudades'),
-('Listar Roles'),
-('Obtener Rol por ID'),
-('Listar Habitaciones'),
-('Crear Habitación'),
-('Actualizar Habitación'),
-('Cambiar Estado de Habitación'),
-('Eliminar Habitación'),
-('Listar Tipos de Habitación');
+('ListUsers'),
+('CreateUsers'),
+('UpdateUser'),
+('ChangeStateUser'),
+('DeleteUser'),
+('ListHotels'),
+('CreateHotel'),
+('UpdateHotel'),
+('ChangeStateHotel'),
+('DeleteHotel'),
+('ListCities'),
+('ListRoles'),
+('GetRoleById'),
+('ListRooms'),
+('CreateRoom'),
+('UpdateRoom'),
+('ChangeStateRoom'),
+('DeleteRoom'),
+('ListRoomTypes');
 
 -- Asignar permisos a roles
 INSERT INTO ROLEPERMISSIONS (ROLEID, PERMISSIONID) VALUES (1, 6); -- Agente de Viajes puede listar hoteles
@@ -44,6 +44,7 @@ INSERT INTO USERS (FIRSTNAME, LASTNAME, EMAIL, PASSWORD, ROLEID)
 VALUES ('Carlos', 'Pérez', 'agente@gmail.com', '$2a$11$OSiP6TZdNHEJN.cq38lA8OhF0JYC4/ghMOq7Zsg9iXFx1M2B5bti.', 1);--contraseña:12345
 INSERT INTO USERS (FIRSTNAME, LASTNAME, EMAIL, PASSWORD, ROLEID) 
 VALUES ('María', 'Gómez', 'viajero@gmail.com', '$2a$11$OSiP6TZdNHEJN.cq38lA8OhF0JYC4/ghMOq7Zsg9iXFx1M2B5bti.', 2);--contraseña:12345
+
 
 -- Insertar ciudades en Colombia
 INSERT INTO CITIES (NAME) VALUES ('Bogotá'), ('Medellín'), ('Cartagena');

@@ -75,6 +75,7 @@ GO
 CREATE TABLE USERHOTELS (
     USERID INT NOT NULL,
     HOTELID INT NOT NULL,
+	IS_PREFERRED BIT DEFAULT 1,
     PRIMARY KEY (USERID, HOTELID),
     FOREIGN KEY (USERID) REFERENCES USERS(USERID),
     FOREIGN KEY (HOTELID) REFERENCES HOTELS(HOTELID)
@@ -134,7 +135,7 @@ CREATE TABLE RESERVATIONS
     STATE INT NOT NULL DEFAULT 1,
     AUDITCREATEDATE DATETIME2(7) DEFAULT GETDATE(),
     FOREIGN KEY (ROOMID) REFERENCES ROOMS(ROOMID),
-    FOREIGN KEY (USERID) REFERENCES USERS(USERID),
+    FOREIGN KEY (USERID) REFERENCES USERS(USERID)
    
 );
 GO
@@ -196,7 +197,7 @@ GO
 --    -- Aquí iría la lógica para enviar el correo (ejecutar un servicio externo)
 --    -- Este paso depende de la implementación de la aplicación
 --END;
-GO
+--GO
 
 -- Restricción para asegurar que solo agentes puedan gestionar hoteles (ejemplo)
 -- (Esto requeriría lógica adicional en la aplicación)

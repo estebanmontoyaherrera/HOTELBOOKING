@@ -21,7 +21,7 @@ namespace HOTELBOOKING.Infrastructure.Extensions
             services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
-            services.AddSingleton<IPermissionService, PermissionService>();
+            services.AddScoped<IPermissionService, PermissionService>();
 
 
             return services;

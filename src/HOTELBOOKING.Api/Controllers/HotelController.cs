@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HOTELBOOKING.Api.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class HotelController : ControllerBase
@@ -23,7 +23,7 @@ namespace HOTELBOOKING.Api.Controllers
         {
             _mediator = mediator;
         }
-        //[HasPermission(Permission.ListHotels)]
+        [HasPermission(Permission.ListHotels)]
         [HttpGet("ListHotels")]
         public async Task<IActionResult> ListHotels()
         {
