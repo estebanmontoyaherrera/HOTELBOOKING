@@ -15,7 +15,9 @@ namespace HOTELBOOKING.Application.UseCase.UseCases.Hotel.Commands.CreateCommand
         public string? Address { get; set; }
         public int? CityId { get; set; }
         public string? CommissionRate { get; set; }
-       
-        
+
+     
     }
+
+ 
 }

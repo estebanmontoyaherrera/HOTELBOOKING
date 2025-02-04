@@ -28,7 +28,14 @@ namespace HOTELBOOKING.Api.Controllers
             var response = await _mediator.Send(new GetAllHotelQuery());
             return Ok(response);
         }
-        //[HasPermission(Permission.CreateHotel)]
+
+        [HttpPost("CreateHotelRoom")]
+        public async Task<IActionResult> CreateHotelRoom([FromBody] CreateHotelRoomCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
         [HttpPost("Create")]
         public async Task<IActionResult> CreateHotel([FromBody] CreateHotelCommand command)
         {

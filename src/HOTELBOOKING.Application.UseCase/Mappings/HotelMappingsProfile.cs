@@ -12,6 +12,8 @@ namespace HOTELBOOKING.Application.UseCase.Mappings
         {
 
             CreateMap<CreateHotelCommand, Hotel>();
+            CreateMap<CreateHotelRoomCommand, Hotel>();
+            CreateMap<CreateRoomsCommand, Room>();
             CreateMap<UpdateHotelCommand, Hotel>();
             CreateMap<ChangeStateHotelCommand, Hotel>();
 
