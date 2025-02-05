@@ -9,6 +9,9 @@ namespace HOTELBOOKING.Application.Interface.Interfaces
         Task<Hotel> GetHotelById(int hotelId);
         Task<IEnumerable<Room>> GetRoomsByHotelId(int hotelId);
 
+        Task<IEnumerable<Hotel>> GetHotelsRoomsByCityId(int cityId, DateTime checkIn, DateTime checkOut, int capacity);
+
+
         Task<Hotel> RegisterHotel(Hotel hotel);
         Task RegisterRoom(Room room);
     }

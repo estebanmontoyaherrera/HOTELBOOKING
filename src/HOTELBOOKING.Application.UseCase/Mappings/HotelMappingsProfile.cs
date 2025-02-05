@@ -17,6 +17,15 @@ namespace HOTELBOOKING.Application.UseCase.Mappings
             CreateMap<GetRoomByHotelIdResponseDto, Room>()
                 .ReverseMap();
 
+
+            CreateMap<GetHotelsRoomsByCityIdResponseDto, Hotel>()
+    .ReverseMap();
+
+            CreateMap<GetHotelRoomResponseDto, Room>()
+                .ReverseMap();
+
+
+
             CreateMap<CreateHotelCommand, Hotel>();
             CreateMap<CreateHotelRoomCommand, Hotel>();
             CreateMap<CreateRoomsCommand, Room>();

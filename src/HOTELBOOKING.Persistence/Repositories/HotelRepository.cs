@@ -47,6 +47,81 @@ namespace HOTELBOOKING.Persistence.Repositories
             return hotel;
         }
 
+        public async Task<IEnumerable<Hotel>> GetHotelsRoomsByCityId(
+     int cityId,
+     DateTime checkIn,
+     DateTime checkOut,
+     int capacity)
+        {
+            var connection = _context.CreateConnection;
+
+            var sql = @"
+  SELECT 
+    h.HotelId, 
+    h.Name, 
+    h.Address, 
+    h.CityId,
+    c.Name AS CityName, 
+    h.CommissionRate, 
+    h.State, 
+    CASE WHEN h.State = 1 THEN 'Activo' ELSE 'Inactivo' END AS StateName,    
+    r.RoomId,   
+    r.RoomTypeId, 
+    r.Capacity, 
+    r.BaseCost, 
+    r.Taxes, 
+    r.Location, 
+    r.State, 
+    CASE WHEN r.State = 1 THEN 'Habilitado' ELSE 'Deshabilitado' END AS RoomStateName   
+FROM HOTELS h
+JOIN CITIES c ON h.CityId = c.CityId  
+LEFT JOIN ROOMS r ON h.HotelId = r.HotelId
+WHERE h.CityId = @CityId
+  AND r.Capacity >= @Capacity
+  AND NOT EXISTS (
+      SELECT 1 
+      FROM RESERVATIONS res
+      WHERE res.RoomId = r.RoomId
+        AND res.State = 1
+        AND (@CheckIn < res.CheckOutDate AND @CheckOut > res.CheckInDate)
+  )
+ORDER BY h.HotelId;
+";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("CityId", cityId);
+            parameters.Add("Capacity", capacity);
+            parameters.Add("CheckIn", checkIn);
+            parameters.Add("CheckOut", checkOut);
+
+            // Diccionario para evitar duplicados de hotel
+            var hotelDictionary = new Dictionary<int, Hotel>();
+
+            var hotels = await connection.QueryAsync<Hotel, Room, Hotel>(
+                sql,
+                (hotel, room) =>
+                {
+                    if (!hotelDictionary.TryGetValue(hotel.HotelId, out var currentHotel))
+                    {
+                        currentHotel = hotel;
+                        currentHotel.Rooms = Enumerable.Empty<Room>(); 
+                        hotelDictionary.Add(currentHotel.HotelId, currentHotel);
+                    }
+
+                    // Si la habitación no es nula, agrégala
+                    if (room != null && room.RoomId.HasValue)
+                    {
+                        currentHotel.Rooms = currentHotel.Rooms.Append(room);
+                    }
+
+                    return currentHotel;
+                },
+                param: parameters,
+                splitOn: "RoomId");
+
+            return hotelDictionary.Values;
+        }
+
 
         public async Task<IEnumerable<Room>> GetRoomsByHotelId(int hotelId)
         {
@@ -74,7 +149,7 @@ namespace HOTELBOOKING.Persistence.Repositories
             parameters.Add("Address", hotel.Address);
             parameters.Add("CityId", hotel.CityId);
             parameters.Add("CommissionRate", hotel.CommissionRate);
-            parameters.Add("State", 1); 
+            parameters.Add("State", 1);
             parameters.Add("AuditCreateDate", DateTime.Now);
 
             var hotelId = await connection.QuerySingleOrDefaultAsync<int>(sql, param: parameters);

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HOTELBOOKING.Api.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ReservationController : ControllerBase
@@ -19,8 +19,8 @@ namespace HOTELBOOKING.Api.Controllers
             _mediator = mediator;
         }
 
-        // Asignamos el permiso adecuado
-        [HasPermission(Permission.ListReservations)]
+       
+        //[HasPermission(Permission.ListReservations)]
         [HttpGet("ListReservations")]
         public async Task<IActionResult> ListReservations()
         {
@@ -28,7 +28,6 @@ namespace HOTELBOOKING.Api.Controllers
             return Ok(response);
         }
 
-        // Asignamos el permiso adecuado
         [HasPermission(Permission.CreateReservation)]
         [HttpPost("Create")]
         public async Task<IActionResult> RegisterReservation([FromBody] CreateReservationCommand command)

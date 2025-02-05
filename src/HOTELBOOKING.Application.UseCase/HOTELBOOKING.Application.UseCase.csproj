@@ -21,4 +21,8 @@
     <ProjectReference Include="..\HOTELBOOKING.Utilities\HOTELBOOKING.Utilities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCases\City\GetByIdQuery\" />
+  </ItemGroup>
+
 </Project>

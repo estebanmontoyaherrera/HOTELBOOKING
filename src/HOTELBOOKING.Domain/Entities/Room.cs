@@ -11,7 +11,7 @@
         public string? Location { get; set; }
         public int? State { get; set; }
         public string? StateName { get; set; }
-
+        public string? RoomStateName { get; set; }
         public DateTime? AuditCreateDate { get; set; } 
         
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HOTELBOOKING.Domain.Entities
+﻿namespace HOTELBOOKING.Domain.Entities
 {
     public class Hotel
     {
@@ -12,6 +6,7 @@ namespace HOTELBOOKING.Domain.Entities
         public string? Name { get; set; }
         public string? Address { get; set; }
         public int? CityId { get; set; }
+        public string? CityName { get; set; }
         public decimal? CommissionRate { get; set; }
         public int? State { get; set; }
         public string? StateName { get; set; }
