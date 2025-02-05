@@ -28,7 +28,7 @@ namespace HOTELBOOKING.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{cityId:int}/{checkIn:datetime}/{checkOut:datetime}/{capacity:int}")]
+        [HttpGet("Search/{cityId:int}/{checkIn:datetime}/{checkOut:datetime}/{capacity:int}")]
         public async Task<IActionResult> GetHotelsRoomsByCityId(int cityId, DateTime checkIn, DateTime checkOut, int capacity)
         {
             var response = await _mediator.Send(new GetHotelsRoomsByCityIdQuery()
