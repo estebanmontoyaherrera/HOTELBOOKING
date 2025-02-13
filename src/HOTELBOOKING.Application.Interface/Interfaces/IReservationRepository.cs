@@ -9,5 +9,8 @@ namespace HOTELBOOKING.Application.Interface.Interfaces
         Task<Reservation> RegisterReservation(Reservation reservation);
         Task RegisterGuest(Guest guest);
         Task RegisterEmergencyContact(EmergencyContact emergencyContact);
+
+        //  método para calcular el costo total de la reserva
+        Task<decimal> CalculateTotalReservationCost(int roomId, DateTime checkInDate, DateTime checkOutDate);
     }
 }

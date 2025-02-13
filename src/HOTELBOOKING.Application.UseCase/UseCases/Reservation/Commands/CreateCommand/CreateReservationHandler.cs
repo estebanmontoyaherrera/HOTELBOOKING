@@ -42,6 +42,13 @@ namespace HOTELBOOKING.Application.UseCase.UseCases.Reservation.Commands.CreateC
                     return response;
                 }
 
+                // Obtener el total de la reserva desde la capa de infraestructura
+                decimal totalCost = await _unitOfWork.Reservation.CalculateTotalReservationCost(
+                    request.RoomId.Value,
+                    request.CheckInDate.Value,
+                    request.CheckOutDate.Value
+                );
+
                 // Obtener nombre del hotel desde la solicitud
                 string hotelName = request.HotelName ?? "Hotel Desconocido";
 
@@ -88,7 +95,7 @@ namespace HOTELBOOKING.Application.UseCase.UseCases.Reservation.Commands.CreateC
                 response.IsSuccess = true;
                 response.Message = GlobalMessages.MESSAGE_SAVE;
 
-                // Enviar correo de confirmación a todos los huéspedes
+                // Enviar correo de confirmación a todos los huéspedes con el costo total
                 if (request.Guests != null && request.Guests.Any())
                 {
                     string subject = "Confirmación de Reserva";
@@ -101,10 +108,10 @@ namespace HOTELBOOKING.Application.UseCase.UseCases.Reservation.Commands.CreateC
                                 <h2>Reserva Confirmada</h2>
                                 <p>Estimado/a {guest.FirstName},</p>
                                 <p>Su reserva en el hotel <strong>{hotelName}</strong> ha sido confirmada.</p>
-                                <p><strong>Fecha de entrada:</strong> {request.CheckInDate}</p>
-                                <p><strong>Fecha de salida:</strong> {request.CheckOutDate}</p>
-                               <p><strong>Cantidad de huéspedes en la reserva:</strong> {(request.Guests != null ? request.Guests.Count() : 0)}</p>
-
+                                <p><strong>Fecha de entrada:</strong> {request.CheckInDate:yyyy-MM-dd}</p>
+                                <p><strong>Fecha de salida:</strong> {request.CheckOutDate:yyyy-MM-dd}</p>
+                                <p><strong>Cantidad de huéspedes en la reserva:</strong> {(request.Guests?.Count() ?? 0)}</p>
+                                <p><strong>Total a pagar:</strong> ${totalCost:N2}</p>
                                 <p>Gracias por elegirnos.</p>";
 
                             await _emailService.SendEmailAsync(guest.Email, subject, body);

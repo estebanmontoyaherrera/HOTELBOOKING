@@ -1,4 +1,4 @@
--- Crear la base de datos
+ï»¿-- Crear la base de datos
 USE MASTER
 GO
 CREATE DATABASE HOTELBOOKINGDB;
@@ -64,7 +64,7 @@ CREATE TABLE HOTELS
     NAME VARCHAR(100) NOT NULL,
     ADDRESS VARCHAR(255) NOT NULL,
     CITYID INT NOT NULL,
-    COMMISSIONRATE DECIMAL(18,2) DEFAULT 0.00, --  campo para comisión
+    COMMISSIONRATE DECIMAL(18,2) DEFAULT 0.00, --  campo para comisiÃ³n
     STATE INT NOT NULL DEFAULT 1,
     AUDITCREATEDATE DATETIME2(7) DEFAULT GETDATE(),    
     FOREIGN KEY (CITYID) REFERENCES CITIES(CITYID)
@@ -177,27 +177,49 @@ CREATE TABLE NOTIFICATIONS
     NOTIFICATIONID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
     USERID INT NOT NULL,
     MESSAGE VARCHAR(MAX) NOT NULL,
-    ISEMAILSENT BIT NOT NULL DEFAULT 0, -- Nuevo campo para rastrear envío
+    ISEMAILSENT BIT NOT NULL DEFAULT 0, -- Nuevo campo para rastrear envÃ­o
     SENTDATE DATETIME2(7) DEFAULT GETDATE(),
     FOREIGN KEY (USERID) REFERENCES USERS(USERID)
 );
 GO
 
--- Trigger para insertar notificación y marcar envío de correo
---CREATE TRIGGER TRG_AFTER_RESERVATION_INSERT
---ON RESERVATIONS
---AFTER INSERT
---AS
---BEGIN
---    -- Insertar notificación
---    INSERT INTO NOTIFICATIONS (USERID, MESSAGE, ISEMAILSENT)
---    SELECT USERID, 'Your reservation has been successfully created!', 0
---    FROM INSERTED;
 
---    -- Aquí iría la lógica para enviar el correo (ejecutar un servicio externo)
---    -- Este paso depende de la implementación de la aplicación
---END;
---GO
 
--- Restricción para asegurar que solo agentes puedan gestionar hoteles (ejemplo)
--- (Esto requeriría lógica adicional en la aplicación)
+CREATE OR ALTER TRIGGER trg_AfterInsertReservation
+ON RESERVATIONS
+AFTER INSERT
+AS
+BEGIN
+
+
+    INSERT INTO NOTIFICATIONS (USERID, MESSAGE, ISEMAILSENT, SENTDATE)
+    SELECT 
+        i.USERID, 
+        CONCAT(
+            'Reserva confirmada en ', h.NAME, ' (', h.ADDRESS, '). ',
+            'Fecha de entrada: ', FORMAT(i.CHECKINDATE, 'yyyy-MM-dd'), 
+            ', Fecha de salida: ', FORMAT(i.CHECKOUTDATE, 'yyyy-MM-dd'), 
+            '. HabitaciÃ³n en ', r.LOCATION, '. ',
+
+            -- CÃ¡lculo correcto del total
+            'Total a pagar: $', 
+            FORMAT(ROUND((r.BASECOST + r.TAXES) * 
+            (DATEDIFF(DAY, CAST(i.CHECKINDATE AS DATE), CAST(i.CHECKOUTDATE AS DATE))), 2), 'N2')
+        ), 
+        0,  
+        GETDATE()
+    FROM inserted i
+    INNER JOIN ROOMS r ON i.ROOMID = r.ROOMID
+    INNER JOIN HOTELS h ON r.HOTELID = h.HOTELID
+    WHERE DATEDIFF(DAY, CAST(i.CHECKINDATE AS DATE), CAST(i.CHECKOUTDATE AS DATE)) > 0;
+END;
+GO
+
+
+
+
+
+
+
+
+

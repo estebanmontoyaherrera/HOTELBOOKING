@@ -138,6 +138,35 @@ namespace HOTELBOOKING.Persistence.Repositories
             await connection.ExecuteAsync(sql, parameters);
         }
 
+        public async Task<decimal> CalculateTotalReservationCost(int roomId, DateTime checkInDate, DateTime checkOutDate)
+        {
+            using var connection = _context.CreateConnection;
+
+            // Consulta para obtener el costo base y los impuestos de la habitación
+            const string query = @"
+        SELECT r.BASECOST, r.TAXES 
+        FROM ROOMS r
+        WHERE r.ROOMID = @RoomId";
+
+            var roomData = await connection.QueryFirstOrDefaultAsync<(decimal BaseCost, decimal Taxes)>(query, new { RoomId = roomId });
+
+            if (roomData.BaseCost == 0)
+            {
+                throw new InvalidOperationException("No se pudo obtener la información de la habitación.");
+            }
+
+            // Calcular el número de noches
+            int numberOfNights = (checkOutDate - checkInDate).Days;
+            if (numberOfNights <= 0)
+            {
+                throw new InvalidOperationException("El número de noches debe ser mayor a cero.");
+            }
+
+            // Calcular el costo total
+            decimal totalCost = (roomData.BaseCost + roomData.Taxes) * numberOfNights;
+
+            return totalCost;
+        }
 
     }
 
