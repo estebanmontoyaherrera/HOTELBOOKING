@@ -30,7 +30,7 @@ namespace HOTELBOOKING.Api.Controllers
             return Ok(response);
         }
 
-        
+
         [HasPermission(Permission.ListUsers)]
         [HttpGet("ListUsers")]
         public async Task<IActionResult> ListUsers()
@@ -69,9 +69,9 @@ namespace HOTELBOOKING.Api.Controllers
             return Ok(response);
         }
 
-       
+
         [HasPermission(Permission.ChangeStateUser)]
-        [HttpPut("ChangeState")]
+        [HttpPatch("ChangeState")]
         public async Task<IActionResult> ChangeStateUser([FromBody] ChangeStateUserCommand command)
         {
             var response = await _mediator.Send(command);

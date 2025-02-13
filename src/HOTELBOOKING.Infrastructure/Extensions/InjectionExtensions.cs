@@ -1,13 +1,10 @@
 ﻿using HOTELBOOKING.Application.Interface.Authentication;
+using HOTELBOOKING.Application.Interface.Services;
 using HOTELBOOKING.Infrastructure.Authentication;
+using HOTELBOOKING.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HOTELBOOKING.Infrastructure.Extensions
 {
@@ -23,6 +20,7 @@ namespace HOTELBOOKING.Infrastructure.Extensions
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
             services.AddScoped<IPermissionService, PermissionService>();
 
+            services.AddSingleton<IEmailService, EmailService>();
 
             return services;
         }

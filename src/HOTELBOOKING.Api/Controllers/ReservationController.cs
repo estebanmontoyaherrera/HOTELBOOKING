@@ -28,7 +28,7 @@ namespace HOTELBOOKING.Api.Controllers
             return Ok(response);
         }
 
-        [HasPermission(Permission.CreateReservation)]
+        //[HasPermission(Permission.CreateReservation)]
         [HttpPost("Create")]
         public async Task<IActionResult> RegisterReservation([FromBody] CreateReservationCommand command)
         {

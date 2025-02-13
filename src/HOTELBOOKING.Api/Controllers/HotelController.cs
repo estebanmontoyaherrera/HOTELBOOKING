@@ -78,7 +78,7 @@ namespace HOTELBOOKING.Api.Controllers
 
        
         [HasPermission(Permission.ChangeStateHotel)]
-        [HttpPut("ChangeState")]
+        [HttpPatch("ChangeState")]
         public async Task<IActionResult> ChangeStateHotel([FromBody] ChangeStateHotelCommand command)
         {
             var response = await _mediator.Send(command);
