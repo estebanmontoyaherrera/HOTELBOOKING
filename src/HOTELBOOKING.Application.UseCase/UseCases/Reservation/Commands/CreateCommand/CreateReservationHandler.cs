@@ -103,7 +103,8 @@ namespace HOTELBOOKING.Application.UseCase.UseCases.Reservation.Commands.CreateC
                                 <p>Su reserva en el hotel <strong>{hotelName}</strong> ha sido confirmada.</p>
                                 <p><strong>Fecha de entrada:</strong> {request.CheckInDate}</p>
                                 <p><strong>Fecha de salida:</strong> {request.CheckOutDate}</p>
-                               
+                               <p><strong>Cantidad de huéspedes en la reserva:</strong> {(request.Guests != null ? request.Guests.Count() : 0)}</p>
+
                                 <p>Gracias por elegirnos.</p>";
 
                             await _emailService.SendEmailAsync(guest.Email, subject, body);
